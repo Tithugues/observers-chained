@@ -1,0 +1,24 @@
+{
+  "name": "hp/oc",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Hugues Peccatte",
+      "email": "hugues.peccatte@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.3",
+    "phpunit/phpunit": "^8.3.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "hp\\oc\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "hp\\oc\\tests\\": "tests/"
+    }
+  }
+}
