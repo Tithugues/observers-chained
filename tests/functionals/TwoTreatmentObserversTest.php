@@ -15,8 +15,8 @@ class TwoTreatmentObserverTest extends TestCase
 
         $doubleTreatment = new DoubleTreatment();
         $nullObserver = new NullObserver();
-        $observer1 = new TreatmentObserver($doubleTreatment, $nullObserver);
-        $observer2 = new TreatmentObserver($doubleTreatment, $observer1);
+        $observer1 = new TreatmentObserver($nullObserver, $doubleTreatment);
+        $observer2 = new TreatmentObserver($observer1, $doubleTreatment);
         $dataReturned = $observer2->process($data);
 
         $this->assertEquals(4, $dataReturned->value);

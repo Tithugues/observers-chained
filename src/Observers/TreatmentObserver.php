@@ -16,7 +16,7 @@ class TreatmentObserver implements ObserverInterface
     /** @var ObserverInterface */
     protected $next;
 
-    public function __construct(TreatmentInterface $treatment, ObserverInterface $next)
+    public function __construct(ObserverInterface $next, TreatmentInterface $treatment)
     {
         $this->treatment = $treatment;
         $this->next = $next;
