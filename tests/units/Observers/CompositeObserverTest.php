@@ -36,7 +36,16 @@ class CompositeObserverTest extends TestCase
             ->method('process')
             ->with();
 
-        $observer = new CompositeObserver($observer1, $observer2);
+        /** @var ObserverInterface|MockObject $next */
+        $next = $this->getMockBuilder(ObserverInterface::class)
+            ->setMethods(['process'])
+            ->getMock();
+
+        $next->expects($this->once())
+            ->method('process')
+            ->with();
+
+        $observer = new CompositeObserver($next, $observer1, $observer2);
         $observer->process($data);
     }
 }

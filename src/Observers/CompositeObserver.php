@@ -11,8 +11,12 @@ class CompositeObserver implements ObserverInterface
     /** @var ObserverInterface[] */
     public $observers;
 
-    public function __construct(ObserverInterface ...$observers)
+    /** @var ObserverInterface */
+    protected $next;
+
+    public function __construct(ObserverInterface $next, ObserverInterface ...$observers)
     {
+        $this->next = $next;
         $this->observers = $observers;
     }
 
@@ -22,6 +26,7 @@ class CompositeObserver implements ObserverInterface
         foreach ($this->observers as $observer) {
             $localData = $observer->process($localData);
         }
+        $localData = $this->next->process($localData);
         return $localData;
     }
 }
