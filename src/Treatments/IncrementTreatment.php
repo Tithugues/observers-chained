@@ -6,13 +6,13 @@ namespace hp\oc\Treatments;
 
 use stdClass;
 
-class DoubleTreatment implements TreatmentInterface
+class IncrementTreatment implements TreatmentInterface
 {
     public function process($data): stdClass
     {
         $localData = clone $data;
 
-        $localData->value *= 2;
+        ++$localData->value;
 
         return $localData;
     }

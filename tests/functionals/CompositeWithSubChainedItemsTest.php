@@ -8,9 +8,9 @@ use hp\oc\Treatments\DoubleTreatment;
 use hp\oc\Treatments\IncrementTreatment;
 use PHPUnit\Framework\TestCase;
 
-class ThreeTreatmentObserverTest extends TestCase
+class CompositeWithSubChainedItemsTest extends TestCase
 {
-    public function testTreatmentObserver()
+    public function testSubChainedItems()
     {
         $data = new stdClass();
         $data->value = 1;
@@ -19,16 +19,18 @@ class ThreeTreatmentObserverTest extends TestCase
         $incrementTreatment = new IncrementTreatment();
         $nullObserver = new NullObserver();
 
-        $compositeObservers = [];
-        $compositeObservers[] = new TreatmentObserver($nullObserver, $doubleTreatment);
-        $compositeObservers[] = new TreatmentObserver($nullObserver, $incrementTreatment);
+        $doublingAndStopObserver = new TreatmentObserver($nullObserver, $doubleTreatment);
+        $incrementingObserver = new TreatmentObserver($doublingAndStopObserver, $incrementTreatment);
+        $incrementingAndStopObserver = new TreatmentObserver($nullObserver, $incrementTreatment);
 
-        $observerNextComposite = new TreatmentObserver($nullObserver, $incrementTreatment);
+        $compositeObserver = new CompositeObserver(
+            $doublingAndStopObserver,
+            $incrementingObserver,
+            $incrementingAndStopObserver
+        );
 
-        $observer3 = new CompositeObserver($observerNextComposite, ...$compositeObservers);
+        $dataReturned = $compositeObserver->process($data);
 
-        $dataReturned = $observer3->process($data);
-
-        $this->assertEquals(4, $dataReturned->value);
+        $this->assertEquals(10, $dataReturned->value);
     }
 }
